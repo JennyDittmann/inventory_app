@@ -58,7 +58,6 @@ public class TagRepositoryTest {
         Tag result = tagRepository.findTagByName("Star");
 
         assertEquals(expectedData, result);
-
     }
 
     @Test
@@ -66,7 +65,6 @@ public class TagRepositoryTest {
         Tag result = tagRepository.findTagByName("Test");
 
         assertNull(result);
-
     }
 
     @Test
