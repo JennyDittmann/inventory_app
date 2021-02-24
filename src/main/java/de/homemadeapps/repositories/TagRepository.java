@@ -9,9 +9,6 @@ import java.util.List;
 
 @Repository
 public interface TagRepository extends CrudRepository<Tag, Integer> {
-    @Query("SELECT t FROM Tag t WHERE t.id = :id")
-    Tag getTagById(int id);
-
     @Query("SELECT t FROM Tag t WHERE t.name LIKE %:name%")
     List<Tag> findTagsByName(String name);
 

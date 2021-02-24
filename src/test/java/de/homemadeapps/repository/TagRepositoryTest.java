@@ -85,26 +85,4 @@ public class TagRepositoryTest {
 
         assertEquals(expected, result);
     }
-
-    @Test
-    public void getTagById_GivenExistingId_ReturnTag() {
-        int id = 1;
-        final Tag expectedTag = new Tag();
-        expectedTag.setId(id);
-        expectedTag.setName("Star Wars");
-        expectedTag.setDescription("This is really cool Star Wars stuff!");
-
-        Tag result = tagRepository.getTagById(id);
-
-        assertEquals(expectedTag, result);
-    }
-
-    @Test
-    public void getTagById_IfNotExist_ReturnNull() {
-        int id = 99;
-
-        Tag result = tagRepository.getTagById(id);
-
-        assertNull(result);
-    }
 }
