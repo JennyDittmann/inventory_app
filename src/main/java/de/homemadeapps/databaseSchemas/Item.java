@@ -3,7 +3,6 @@ package de.homemadeapps.databaseSchemas;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
@@ -14,6 +13,13 @@ public class Item {
     private int id;
     private String name;
     private String description;
-    @ElementCollection
-    private List<String> tag;
+
+    public Item() {
+    }
+
+    public Item(final int id, final String name, final String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 }
