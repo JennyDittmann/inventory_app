@@ -52,6 +52,24 @@ public class TagRepositoryTest {
     }
 
     @Test
+    public void findTagByName_OnHavingData_ReturnTag() {
+        Tag expectedData = new Tag(2, "Star", "Stuff");
+
+        Tag result = tagRepository.findTagByName("Star");
+
+        assertEquals(expectedData, result);
+
+    }
+
+    @Test
+    public void findTagByName_IfNotExist_ReturnNull() {
+        Tag result = tagRepository.findTagByName("Test");
+
+        assertNull(result);
+
+    }
+
+    @Test
     public void findTagsByName_OnHavingData_ReturnList() {
         List<Tag> expectedData = new ArrayList<>(Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars" +
                 " stuff!"), new Tag(2, "Star", "Stuff")));
