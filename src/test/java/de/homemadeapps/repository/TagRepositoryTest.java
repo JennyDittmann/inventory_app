@@ -42,7 +42,7 @@ public class TagRepositoryTest {
     }
 
     @Test
-    public void findTagsByDescription_IfNotExist_ReturnEmptyList(){
+    public void findTagsByDescription_IfNotExist_ReturnEmptyList() {
         List<Tag> expectedData = new ArrayList<>();
 
         List<Tag> result = tagRepository.findTagsByDescription("Noep");
