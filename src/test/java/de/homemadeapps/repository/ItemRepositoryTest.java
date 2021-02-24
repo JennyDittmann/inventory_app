@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -26,9 +27,27 @@ public class ItemRepositoryTest {
 
     @Before
     public void setUp() {
-        mockedData = new ArrayList<>(Arrays.asList(new Item(1, "Pictures", "Spiel für 3-5 Personen."), new Item(2,
-                "Ligretto", "Spiel für 2-4 Personen.")));
+        mockedData = Arrays.asList(new Item(1, "Pictures", "Spiel für 3-5 Personen."), new Item(2,
+                "Ligretto", "Spiel für 2-4 Personen."));
         itemRepository.saveAll(mockedData);
+    }
+
+    @Test
+    public void findItemsByName_OnHavingData_ReturnList() {
+        List<Item> expectedData = Collections.singletonList(new Item(1, "Pictures", "Spiel für 3-5 Personen."));
+
+        List<Item> result = itemRepository.findItemsByName("Pictures");
+
+        assertEquals(expectedData, result);
+    }
+
+    @Test
+    public void findItemsByName_IfNotExist_ReturnEmptyList() {
+        List<Item> expectedData = new ArrayList<>();
+
+        List<Item> result = itemRepository.findItemsByName("Kniffel");
+
+        assertEquals(expectedData, result);
     }
 
     @Test

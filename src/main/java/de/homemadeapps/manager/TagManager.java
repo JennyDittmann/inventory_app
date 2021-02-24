@@ -23,7 +23,7 @@ public class TagManager {
         tag.setName(name);
         tag.setDescription(description);
 
-        if (tagRepository.findTagByName(name) == null) {
+        if (tagRepository.findTagByExactName(name) == null) {
             tagRepository.save(tag);
             success = true;
         }

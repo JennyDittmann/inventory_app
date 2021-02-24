@@ -27,14 +27,14 @@ public class TagRepositoryTest {
 
     @Before
     public void setUp() {
-        List<Tag> mockedData = new ArrayList<>(Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars " +
-                "stuff!"), new Tag(2, "Star", "Stuff"), new Tag(3, "Dinge", "Awesome Stuff yey")));
+        List<Tag> mockedData = Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars " +
+                "stuff!"), new Tag(2, "Star", "Stuff"), new Tag(3, "Dinge", "Awesome Stuff yey"));
         tagRepository.saveAll(mockedData);
     }
 
     @Test
     public void findTagsByDescription_OnHavingData_ReturnList() {
-        List<Tag> expectedData = new ArrayList<>(Collections.singletonList(new Tag(3, "Dinge", "Awesome Stuff yey")));
+        List<Tag> expectedData = Collections.singletonList(new Tag(3, "Dinge", "Awesome Stuff yey"));
 
         List<Tag> result = tagRepository.findTagsByDescription("Awesome");
 
@@ -52,25 +52,25 @@ public class TagRepositoryTest {
     }
 
     @Test
-    public void findTagByName_OnHavingData_ReturnTag() {
+    public void findTagByExactName_OnHavingData_ReturnTag() {
         Tag expectedData = new Tag(2, "Star", "Stuff");
 
-        Tag result = tagRepository.findTagByName("Star");
+        Tag result = tagRepository.findTagByExactName("Star");
 
         assertEquals(expectedData, result);
     }
 
     @Test
-    public void findTagByName_IfNotExist_ReturnNull() {
-        Tag result = tagRepository.findTagByName("Test");
+    public void findTagByExactName_IfNotExist_ReturnNull() {
+        Tag result = tagRepository.findTagByExactName("Test");
 
         assertNull(result);
     }
 
     @Test
     public void findTagsByName_OnHavingData_ReturnList() {
-        List<Tag> expectedData = new ArrayList<>(Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars" +
-                " stuff!"), new Tag(2, "Star", "Stuff")));
+        List<Tag> expectedData = Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars" +
+                " stuff!"), new Tag(2, "Star", "Stuff"));
 
         List<Tag> result = tagRepository.findTagsByName("Star");
 
