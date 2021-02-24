@@ -1,6 +1,5 @@
 package de.homemadeapps.manager;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import de.homemadeapps.databaseSchemas.Tag;
 import de.homemadeapps.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +33,13 @@ public class TagManager {
 
     public boolean updateTag(final int id, final String name, final String description) {
         boolean success = false;
-        if(tagRepository.findById(id).isPresent()){
+
+        if (tagRepository.findById(id).isPresent()) {
             final Tag tag = new Tag(name, description);
             tagRepository.save(tag);
             success = true;
         }
+
         return success;
     }
 
