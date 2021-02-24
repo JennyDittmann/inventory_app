@@ -13,6 +13,11 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
-    @Column(name = "container_id")
-    private String container;
+
+    public Room(){}
+
+    public Room(final int id, final String name){
+        this.id = id;
+        this.name = name;
+    }
 }
