@@ -1,7 +1,6 @@
-package de.homemadeapps.repository;
+package de.homemadeapps.repositories;
 
 import de.homemadeapps.databaseSchemas.Item;
-import de.homemadeapps.repositories.ItemRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
