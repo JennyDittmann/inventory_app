@@ -15,4 +15,14 @@ public class ItemTagConnector {
     private int itemId;
     @Column(name = "tag_id")
     private int tagId;
+
+    public ItemTagConnector() {
+
+    }
+
+    public ItemTagConnector(final int id, final int itemId, final int tagId) {
+        this.id = id;
+        this.itemId = itemId;
+        this.tagId = tagId;
+    }
 }
