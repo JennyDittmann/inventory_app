@@ -1,13 +1,14 @@
 package de.homemadeapps.repositories;
 
 import de.homemadeapps.databaseSchemas.Container;
-import de.homemadeapps.databaseSchemas.Item;
+import de.homemadeapps.databaseSchemas.Room;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -20,21 +21,31 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles
 public class ContainerRepositoryTest {
     @Autowired
     private ContainerRepository containerRepository;
+    @Autowired
+    private RoomRepository roomRepository;
+
+    private Room bedRoom;
+    private Room livingRoom;
 
     @Before
     public void setUp() {
-        List<Container> mockedData = Arrays.asList(new Container(1, "Schrank","großer Kleiderschrank"), new Container(2, "Karton",
-                "Aus Pappe :)"));
+        bedRoom = new Room(1, "Schlafzimmer");
+        livingRoom = new Room(2, "Wohnzimmer");
+        roomRepository.saveAll(Arrays.asList(bedRoom, livingRoom));
+
+        List<Container> mockedData = Arrays.asList(new Container(1, "Schrank", "großer Kleiderschrank", bedRoom),
+                new Container(2, "Karton", "Aus Pappe :)", livingRoom));
         containerRepository.saveAll(mockedData);
     }
 
     @Test
     public void findContainersByName_OnHavingData_ReturnList() {
         List<Container> expectedData = Collections.singletonList(new Container(2, "Karton",
-                "Aus Pappe :)"));
+                "Aus Pappe :)", livingRoom));
 
         List<Container> result = containerRepository.findContainersByName("Karton");
 
@@ -52,7 +63,9 @@ public class ContainerRepositoryTest {
 
     @Test
     public void findContainersByDescription_OnHavingData_ReturnList() {
-        List<Container> expectedData = Collections.singletonList(new Container(1, "Schrank", "großer Kleiderschrank"));
+        List<Container> expectedData = Collections.singletonList(new Container(1, "Schrank", "großer " +
+                "Kleiderschrank", bedRoom));
+
         List<Container> result = containerRepository.findContainersByDescription("Kleiderschrank");
 
         assertEquals(expectedData, result);
