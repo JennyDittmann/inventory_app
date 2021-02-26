@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -45,9 +46,16 @@ public class TagManager {
 
     public List<Tag> searchTagsByNameAndDescription(String query) {
         List<Tag> resultList = new ArrayList<>();
+        List<Tag> resultListByDescription = new ArrayList<>();
 
         resultList.addAll(tagRepository.findTagsByName(query));
         resultList.addAll(tagRepository.findTagsByDescription(query));
+
+        for(Tag tag : resultListByDescription){
+            if(!resultList.contains(tag)){
+                resultList.add(tag);
+            }
+        }
 
         return resultList;
     }

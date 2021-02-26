@@ -27,7 +27,8 @@ public class TagManagerTest {
     @Before
     public void setUp() {
         tagManager = new TagManager(tagRepository);
-        List<Tag> mockedData = new ArrayList<>(Arrays.asList(new Tag(1, "Krieg der Sterne", "This is really cool Star" +
+        List<Tag> mockedData = new ArrayList<>(Arrays.asList(new Tag(1, "Krieg der Sterne", "This is " +
+                "really cool Star" +
                 " Wars stuff!"), new Tag(2, "Star", "Stuff"), new Tag(3, "Dinge", "Awesome Stuff yey")));
         tagRepository.saveAll(mockedData);
     }
@@ -62,8 +63,8 @@ public class TagManagerTest {
 
     @Test
     public void searchTagsByNameAndDescription_OnHavingData_ReturnList() {
-        List<Tag> expectedData = new ArrayList<>(Arrays.asList(new Tag(1, "Krieg der Sterne", "This is really cool Star" +
-                " Wars stuff!"), new Tag(2, "Star", "Stuff")));
+        List<Tag> expectedData = new ArrayList<>(Arrays.asList(new Tag(1, "Krieg der Sterne", "This is " +
+                "really cool Star Wars stuff!"), new Tag(2, "Star", "Stuff")));
 
         List<Tag> result = tagManager.searchTagsByNameAndDescription("Star");
 
