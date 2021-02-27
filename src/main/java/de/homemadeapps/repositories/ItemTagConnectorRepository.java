@@ -15,4 +15,7 @@ public interface ItemTagConnectorRepository extends CrudRepository<ItemTagConnec
 
     @Query("SELECT itc FROM ItemTagConnector itc WHERE itc.itemId = :itemId")
     List<ItemTagConnector> findTagsByItemId(int itemId);
+
+    @Query("SELECT itc FROM ItemTagConnector itc")
+    List<ItemTagConnector> printTable();
 }

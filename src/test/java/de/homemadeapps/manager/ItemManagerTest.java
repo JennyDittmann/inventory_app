@@ -24,46 +24,48 @@ public class ItemManagerTest {
     private ItemManager itemManager;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         itemManager = new ItemManager(itemRepository);
-        List<Item> mockedData = Arrays.asList(new Item(1, "Dragonball Band 1", "Band 1 des Mangas Dragonball - " +
-                "Deutsch"), new Item(2, "Wallace", "Teddybär, Grün mit rotem Schaal"), new Item(3,"Manga","Band " +
-                "123465"));
+        List<Item> mockedData = Arrays.asList(
+                new Item(1, "Dragonball Band 1", "Band 1 des Mangas Dragonball - Deutsch"),
+                new Item(2, "Wallace", "Teddybär, Grün mit rotem Schaal"),
+                new Item(3, "Manga", "Band 123465"));
         itemRepository.saveAll(mockedData);
     }
 
     @Test
-    public void saveItem_IfNoDuplicateExist_ReturnTrue(){
+    public void saveItem_IfNoDuplicateExist_ReturnTrue() {
         boolean result = itemManager.saveItem("19x19 Goban", "Brett zum Spielen von Go");
 
         assertTrue(result);
     }
 
     @Test
-    public void saveItem_IfDuplicateExist_ReturnFalse(){
+    public void saveItem_IfDuplicateExist_ReturnFalse() {
         boolean result = itemManager.saveItem("Wallace", "Teddybär, Grün mit rotem Schaal");
 
         assertFalse(result);
     }
 
     @Test
-    public void updateItem_IfItemIsPresent_ReturnTrue(){
-        boolean result = itemManager.updateItem(1,"Dragonball Band 1", "Lol :)");
+    public void updateItem_IfItemIsPresent_ReturnTrue() {
+        boolean result = itemManager.updateItem(1, "Dragonball Band 1", "Lol :)");
 
         assertTrue(result);
     }
 
     @Test
-    public void updateItem_IfItemIsNotPresent_ReturnFalse(){
-        boolean result = itemManager.updateItem(15,"Dinge", "Dinge Dinge");
+    public void updateItem_IfItemIsNotPresent_ReturnFalse() {
+        boolean result = itemManager.updateItem(15, "Dinge", "Dinge Dinge");
 
         assertFalse(result);
     }
 
     @Test
-    public void searchItemsByNameAndDescription_OnHavingData_ReturnList(){
-        List<Item> expectedData = Arrays.asList(new Item(1, "Dragonball Band 1", "Band 1 des Mangas Dragonball - " +
-                "Deutsch"), new Item(3,"Manga","Band 123465"));
+    public void searchItemsByNameAndDescription_OnHavingData_ReturnList() {
+        List<Item> expectedData = Arrays.asList(
+                new Item(1, "Dragonball Band 1", "Band 1 des Mangas Dragonball - Deutsch"),
+                new Item(3, "Manga", "Band 123465"));
 
         List<Item> result = itemManager.searchItemsByNameAndDescription("Band");
 
@@ -72,7 +74,7 @@ public class ItemManagerTest {
     }
 
     @Test
-    public void deleteItem_IfExist_ReturnTrue(){
+    public void deleteItem_IfExist_ReturnTrue() {
         Item item = new Item(2, "Wallace", "Teddybär, Grün mit rotem Schaal");
         boolean result = itemManager.deleteItem(item);
 
@@ -80,7 +82,7 @@ public class ItemManagerTest {
     }
 
     @Test
-    public void deleteItem_IfNotExist_ReturnFalse(){
+    public void deleteItem_IfNotExist_ReturnFalse() {
         Item item = new Item(99, "Grillzange", "IKEA Grillzange, Grün");
         boolean result = itemManager.deleteItem(item);
 

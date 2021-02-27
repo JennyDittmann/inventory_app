@@ -7,9 +7,7 @@ import de.homemadeapps.repositories.ItemTagConnectorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,5 +46,15 @@ public class ItemTagConnectorManager {
         }
 
         return foundItems.stream().filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public List<Item> searchItemsByTags(String searchQuery) {
+        final List<Item> descriptionSearchResult = findItemsByTagDescription(searchQuery);
+        final List<Item> nameSearchResult = findItemsByTagName(searchQuery);
+
+        Set<Item> result = new LinkedHashSet<>(descriptionSearchResult);
+        result.addAll(nameSearchResult);
+
+        return new ArrayList<>(result);
     }
 }

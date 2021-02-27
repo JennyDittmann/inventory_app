@@ -37,15 +37,16 @@ public class ContainerRepositoryTest {
         livingRoom = new Room(2, "Wohnzimmer");
         roomRepository.saveAll(Arrays.asList(bedRoom, livingRoom));
 
-        List<Container> mockedData = Arrays.asList(new Container(1, "Schrank", "großer Kleiderschrank", bedRoom),
+        List<Container> mockedData = Arrays.asList(
+                new Container(1, "Schrank", "großer Kleiderschrank", bedRoom),
                 new Container(2, "Karton", "Aus Pappe :)", livingRoom));
         containerRepository.saveAll(mockedData);
     }
 
     @Test
     public void findContainersByName_OnHavingData_ReturnList() {
-        List<Container> expectedData = Collections.singletonList(new Container(2, "Karton",
-                "Aus Pappe :)", livingRoom));
+        List<Container> expectedData = Collections.singletonList(
+                new Container(2, "Karton", "Aus Pappe :)", livingRoom));
 
         List<Container> result = containerRepository.findContainersByName("Karton");
 
@@ -63,8 +64,8 @@ public class ContainerRepositoryTest {
 
     @Test
     public void findContainersByDescription_OnHavingData_ReturnList() {
-        List<Container> expectedData = Collections.singletonList(new Container(1, "Schrank", "großer " +
-                "Kleiderschrank", bedRoom));
+        List<Container> expectedData = Collections.singletonList(
+                new Container(1, "Schrank", "großer Kleiderschrank", bedRoom));
 
         List<Container> result = containerRepository.findContainersByDescription("Kleiderschrank");
 

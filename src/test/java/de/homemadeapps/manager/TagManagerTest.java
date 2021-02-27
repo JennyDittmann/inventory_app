@@ -68,6 +68,7 @@ public class TagManagerTest {
 
         List<Tag> result = tagManager.searchTagsByNameAndDescription("Star");
 
+        assertTrue(expectedData.containsAll(result));
         assertTrue(result.containsAll(expectedData));
     }
 

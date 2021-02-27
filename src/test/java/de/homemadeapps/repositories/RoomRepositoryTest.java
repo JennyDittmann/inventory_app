@@ -26,7 +26,9 @@ public class RoomRepositoryTest {
 
     @Before
     public void setUp(){
-       List<Room> mockedData = Arrays.asList(new Room(1,"Gaming-Zimmer"), new Room(2,"Wohnzimmer"));
+       List<Room> mockedData = Arrays.asList(
+               new Room(1,"Gaming-Zimmer"),
+               new Room(2,"Wohnzimmer"));
        roomRepository.saveAll(mockedData);
     }
 

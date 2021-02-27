@@ -26,8 +26,10 @@ public class TagRepositoryTest {
 
     @Before
     public void setUp() {
-        List<Tag> mockedData = Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars " +
-                "stuff!"), new Tag(2, "Star", "Stuff"), new Tag(3, "Dinge", "Awesome Stuff yey"));
+        List<Tag> mockedData = Arrays.asList(
+                new Tag(1, "Star Wars", "This is really cool Star Wars stuff!"),
+                new Tag(2, "Star", "Stuff"),
+                new Tag(3, "Dinge", "Awesome Stuff yey"));
         tagRepository.saveAll(mockedData);
     }
 
@@ -68,8 +70,9 @@ public class TagRepositoryTest {
 
     @Test
     public void findTagsByName_OnHavingData_ReturnList() {
-        List<Tag> expectedData = Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars" +
-                " stuff!"), new Tag(2, "Star", "Stuff"));
+        List<Tag> expectedData = Arrays.asList(
+                new Tag(1, "Star Wars", "This is really cool Star Wars stuff!"),
+                new Tag(2, "Star", "Stuff"));
 
         List<Tag> result = tagRepository.findTagsByName("Star");
 
