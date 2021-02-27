@@ -25,12 +25,11 @@ public class ItemTagConnector {
         this.tagId = tagId;
     }
 
-    public boolean equals(final Object other){
-        boolean isEquals = false;
-        if(other instanceof ItemTagConnector){
-            ItemTagConnector connector = (ItemTagConnector) other;
-            isEquals = this.tagId == connector.tagId && this.itemId == connector.itemId;
-        }
-        return isEquals;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemTagConnector that = (ItemTagConnector) o;
+        return itemId == that.itemId && tagId == that.tagId;
     }
 }

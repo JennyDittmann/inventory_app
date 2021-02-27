@@ -18,7 +18,7 @@ public class ItemManager {
         this.itemRepository = itemRepository;
     }
 
-    public Optional<Item> getItemById(final int id){
+    public Optional<Item> getItemById(final int id) {
         return itemRepository.findById(id);
     }
 
@@ -69,16 +69,14 @@ public class ItemManager {
         return resultList;
     }
 
-    public boolean deleteItem(final Item item) {
-        boolean success = false;
-        Optional<Item> itemFromDatabase = itemRepository.findById(item.getId());
+    public boolean deleteItem(final int id) {
+        Optional<Item> itemFromDatabase = itemRepository.findById(id);
         final boolean itemIsPresent = itemFromDatabase.isPresent();
 
-        if (itemIsPresent && itemFromDatabase.get().equals(item)) {
-            itemRepository.delete(item);
-            success = true;
+        if (itemIsPresent) {
+            itemRepository.delete(itemFromDatabase.get());
         }
 
-        return success;
+        return itemIsPresent;
     }
 }

@@ -27,9 +27,9 @@ public class ItemManagerTest {
     public void setUp() {
         itemManager = new ItemManager(itemRepository);
         List<Item> mockedData = Arrays.asList(
-                new Item(1, "Dragonball Band 1", "Band 1 des Mangas Dragonball - Deutsch"),
-                new Item(2, "Wallace", "Teddybär, Grün mit rotem Schaal"),
-                new Item(3, "Manga", "Band 123465"));
+                new Item("Dragonball Band 1", "Band 1 des Mangas Dragonball - Deutsch"),
+                new Item("Wallace", "Teddybär, Grün mit rotem Schaal"),
+                new Item("Manga", "Band 123465"));
         itemRepository.saveAll(mockedData);
     }
 
@@ -64,8 +64,8 @@ public class ItemManagerTest {
     @Test
     public void searchItemsByNameAndDescription_OnHavingData_ReturnList() {
         List<Item> expectedData = Arrays.asList(
-                new Item(1, "Dragonball Band 1", "Band 1 des Mangas Dragonball - Deutsch"),
-                new Item(3, "Manga", "Band 123465"));
+                new Item("Dragonball Band 1", "Band 1 des Mangas Dragonball - Deutsch"),
+                new Item("Manga", "Band 123465"));
 
         List<Item> result = itemManager.searchItemsByNameAndDescription("Band");
 
@@ -75,16 +75,14 @@ public class ItemManagerTest {
 
     @Test
     public void deleteItem_IfExist_ReturnTrue() {
-        Item item = new Item(2, "Wallace", "Teddybär, Grün mit rotem Schaal");
-        boolean result = itemManager.deleteItem(item);
+        boolean result = itemManager.deleteItem(1);
 
         assertTrue(result);
     }
 
     @Test
     public void deleteItem_IfNotExist_ReturnFalse() {
-        Item item = new Item(99, "Grillzange", "IKEA Grillzange, Grün");
-        boolean result = itemManager.deleteItem(item);
+        boolean result = itemManager.deleteItem(99);
 
         assertFalse(result);
     }

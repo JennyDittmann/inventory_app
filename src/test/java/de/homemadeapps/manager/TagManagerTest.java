@@ -27,9 +27,10 @@ public class TagManagerTest {
     @Before
     public void setUp() {
         tagManager = new TagManager(tagRepository);
-        List<Tag> mockedData = new ArrayList<>(Arrays.asList(new Tag(1, "Krieg der Sterne", "This is " +
-                "really cool Star Wars stuff!"), new Tag(2, "Star", "Stuff"), new Tag(3, "Dinge",
-                "Awesome Stuff yey")));
+        List<Tag> mockedData = new ArrayList<>(Arrays.asList(
+                new Tag("Krieg der Sterne", "This is really cool Star Wars stuff!"),
+                new Tag("Star", "Stuff"),
+                new Tag("Dinge", "Awesome Stuff yey")));
         tagRepository.saveAll(mockedData);
     }
 
@@ -48,14 +49,14 @@ public class TagManagerTest {
     }
 
     @Test
-    public void updateTag_IfTagExists_ReturnTrue(){
-        boolean result = tagManager.updateTag(1,"Star Wars", "New new new!");
+    public void updateTag_IfTagExists_ReturnTrue() {
+        boolean result = tagManager.updateTag(1, "Star Wars", "New new new!");
 
         assertTrue(result);
     }
 
     @Test
-    public void updateTag_IfTagDoesNotExist_ReturnFalse(){
+    public void updateTag_IfTagDoesNotExist_ReturnFalse() {
         boolean result = tagManager.updateTag(20, "Does not", "Exist...");
 
         assertFalse(result);
@@ -63,8 +64,9 @@ public class TagManagerTest {
 
     @Test
     public void searchTagsByNameAndDescription_OnHavingData_ReturnList() {
-        List<Tag> expectedData = new ArrayList<>(Arrays.asList(new Tag(1, "Krieg der Sterne", "This is " +
-                "really cool Star Wars stuff!"), new Tag(2, "Star", "Stuff")));
+        List<Tag> expectedData = Arrays.asList(
+                new Tag("Krieg der Sterne", "This is really cool Star Wars stuff!"),
+                new Tag("Star", "Stuff"));
 
         List<Tag> result = tagManager.searchTagsByNameAndDescription("Star");
 
@@ -82,16 +84,15 @@ public class TagManagerTest {
     }
 
     @Test
-    public void deleteTag_IfExist_ReturnTrue(){
-        boolean result = tagManager.deleteTag(new Tag(1, "Krieg der Sterne", "This is " +
-                "really cool Star Wars stuff!"));
+    public void deleteTag_IfExist_ReturnTrue() {
+        boolean result = tagManager.deleteTag(1);
 
         assertTrue(result);
     }
 
     @Test
-    public void deleteTag_IfNotExist_ReturnFalse(){
-        boolean result = tagManager.deleteTag(new Tag(7,"Bogenschießen","Shoooooting with errors... :D"));
+    public void deleteTag_IfNotExist_ReturnFalse() {
+        boolean result = tagManager.deleteTag(99);
 
         assertFalse(result);
     }

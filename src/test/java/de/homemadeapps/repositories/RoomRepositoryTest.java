@@ -27,14 +27,14 @@ public class RoomRepositoryTest {
     @Before
     public void setUp(){
        List<Room> mockedData = Arrays.asList(
-               new Room(1,"Gaming-Zimmer"),
-               new Room(2,"Wohnzimmer"));
+               new Room("Gaming-Zimmer"),
+               new Room("Wohnzimmer"));
        roomRepository.saveAll(mockedData);
     }
 
     @Test
     public void findRoomByName_OnHavingData_ReturnList() {
-        List<Room> expectedData = Collections.singletonList(new Room(1, "Gaming-Zimmer"));
+        List<Room> expectedData = Collections.singletonList(new Room( "Gaming-Zimmer"));
 
         List<Room> result = roomRepository.findRoomsByName("Zimmer");
 

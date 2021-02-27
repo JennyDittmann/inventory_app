@@ -44,11 +44,11 @@ public class TagManager {
         return success;
     }
 
-    public List<Tag> searchTagsByName(final String query){
+    public List<Tag> searchTagsByName(final String query) {
         return tagRepository.findTagsByName(query);
     }
 
-    public List<Tag> searchTagsByDescription(final String query){
+    public List<Tag> searchTagsByDescription(final String query) {
         return tagRepository.findTagsByDescription(query);
     }
 
@@ -66,16 +66,14 @@ public class TagManager {
     }
 
 
-    public boolean deleteTag(final Tag tag) {
-        boolean success = false;
-        Optional<Tag> tagFromDatabase = tagRepository.findById(tag.getId());
+    public boolean deleteTag(final int id) {
+        Optional<Tag> tagFromDatabase = tagRepository.findById(id);
         boolean tagIsPresent = tagFromDatabase.isPresent();
 
-        if (tagIsPresent && tagFromDatabase.get().equals(tag)) {
-            tagRepository.delete(tag);
-            success = true;
+        if (tagIsPresent) {
+            tagRepository.delete(tagFromDatabase.get());
         }
 
-        return success;
+        return tagIsPresent;
     }
 }
