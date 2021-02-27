@@ -5,7 +5,6 @@ import de.homemadeapps.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +44,15 @@ public class TagManager {
         return success;
     }
 
-    public List<Tag> searchTagsByNameAndDescription(String query) {
+    public List<Tag> searchTagsByName(final String query){
+        return tagRepository.findTagsByName(query);
+    }
+
+    public List<Tag> searchTagsByDescription(final String query){
+        return tagRepository.findTagsByDescription(query);
+    }
+
+    public List<Tag> searchTagsByNameAndDescription(final String query) {
         List<Tag> resultList = new ArrayList<>(tagRepository.findTagsByName(query));
         List<Tag> resultListByDescription = new ArrayList<>(tagRepository.findTagsByDescription(query));
 
@@ -59,12 +66,12 @@ public class TagManager {
     }
 
 
-    public boolean deleteTag(Tag tag) {
+    public boolean deleteTag(final Tag tag) {
         boolean success = false;
         Optional<Tag> tagFromDatabase = tagRepository.findById(tag.getId());
         boolean tagIsPresent = tagFromDatabase.isPresent();
 
-        if(tagIsPresent && tagFromDatabase.get().equals(tag)){
+        if (tagIsPresent && tagFromDatabase.get().equals(tag)) {
             tagRepository.delete(tag);
             success = true;
         }

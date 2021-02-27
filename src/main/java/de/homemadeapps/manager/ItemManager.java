@@ -18,13 +18,17 @@ public class ItemManager {
         this.itemRepository = itemRepository;
     }
 
+    public Optional<Item> getItemById(final int id){
+        return itemRepository.findById(id);
+    }
+
     public boolean saveItem(final String name, final String description) {
         boolean success = false;
         boolean doExist = false;
-        Item item = new Item();
+        final Item item = new Item();
         item.setName(name);
         item.setName(description);
-        List<Item> smallItemRepo = itemRepository.findItemsByName(name);
+        final List<Item> smallItemRepo = itemRepository.findItemsByName(name);
 
         for (Item filteredItem : smallItemRepo) {
             if (filteredItem.getDescription().equals(description)) {
@@ -53,8 +57,8 @@ public class ItemManager {
     }
 
     public List<Item> searchItemsByNameAndDescription(final String query) {
-        List<Item> resultList = new ArrayList<>(itemRepository.findItemsByName(query));
-        List<Item> resultListByDescription = new ArrayList<>(itemRepository.findItemsByDescription(query));
+        final List<Item> resultList = new ArrayList<>(itemRepository.findItemsByName(query));
+        final List<Item> resultListByDescription = new ArrayList<>(itemRepository.findItemsByDescription(query));
 
         for (Item item : resultListByDescription) {
             if (!resultList.contains(item)) {
@@ -65,10 +69,10 @@ public class ItemManager {
         return resultList;
     }
 
-    public boolean deleteItem(Item item) {
+    public boolean deleteItem(final Item item) {
         boolean success = false;
         Optional<Item> itemFromDatabase = itemRepository.findById(item.getId());
-        boolean itemIsPresent = itemFromDatabase.isPresent();
+        final boolean itemIsPresent = itemFromDatabase.isPresent();
 
         if (itemIsPresent && itemFromDatabase.get().equals(item)) {
             itemRepository.delete(item);
