@@ -1,5 +1,7 @@
 package de.homemadeapps.manager;
 
+import de.homemadeapps.EnrichedSearchResult;
+import de.homemadeapps.SearchStrategy;
 import de.homemadeapps.databaseSchemas.Item;
 import de.homemadeapps.databaseSchemas.ItemTagConnector;
 import de.homemadeapps.databaseSchemas.Tag;
@@ -48,7 +50,11 @@ public class ItemTagConnectorManager {
         return foundItems.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    public List<Item> searchItemsByTags(String searchQuery) {
+    public List<Item> searchItemsByTags(final String searchQuery) {
+        return searchItemsByTags(searchQuery, SearchStrategy.UNSORTED);
+    }
+
+    public List<Item> searchItemsByTags(final String searchQuery, final SearchStrategy searchStrategy) {
         final List<Item> descriptionSearchResult = findItemsByTagDescription(searchQuery);
         final List<Item> nameSearchResult = findItemsByTagName(searchQuery);
 
@@ -57,4 +63,37 @@ public class ItemTagConnectorManager {
 
         return new ArrayList<>(result);
     }
+
+    //TODO: Find better naming... :)
+    public List<EnrichedSearchResult<Item>> createEnrichedTagSearchResults(final List<Item> itemListName,
+                                                           final List<Item> itemListDescription) {
+        List<EnrichedSearchResult<Item>> enrichedSearchResults = new ArrayList<>();
+
+        for (final Item item : itemListName) {
+            EnrichedSearchResult<Item> enrichedResult = addItemIfAbsentAndReturnEnrichedSearchResult(enrichedSearchResults, item);
+            enrichedResult.increaseNameCount();
+        }
+
+        for (final Item item : itemListDescription) {
+            EnrichedSearchResult<Item> enrichedResult = addItemIfAbsentAndReturnEnrichedSearchResult(enrichedSearchResults, item);
+            enrichedResult.increaseDescriptionCount();
+        }
+
+        return enrichedSearchResults;
+    }
+
+    private EnrichedSearchResult<Item> addItemIfAbsentAndReturnEnrichedSearchResult(List<EnrichedSearchResult<Item>> enrichedSearchResults, Item item) {
+        EnrichedSearchResult<Item> enrichedResult;
+        Optional<EnrichedSearchResult<Item>> maybeItem =
+                enrichedSearchResults.stream().findFirst().filter(e -> e.result.equals(item));
+
+        if (maybeItem.isEmpty()) {
+            enrichedResult = new EnrichedSearchResult<>(item);
+            enrichedSearchResults.add(enrichedResult);
+        } else {
+            enrichedResult = maybeItem.get();
+        }
+        return enrichedResult;
+    }
+
 }

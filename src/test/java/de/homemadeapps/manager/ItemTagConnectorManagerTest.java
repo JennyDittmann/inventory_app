@@ -1,5 +1,7 @@
 package de.homemadeapps.manager;
 
+import de.homemadeapps.EnrichedSearchResult;
+import de.homemadeapps.SearchStrategy;
 import de.homemadeapps.databaseSchemas.Item;
 import de.homemadeapps.databaseSchemas.ItemTagConnector;
 import de.homemadeapps.databaseSchemas.Tag;
@@ -39,11 +41,11 @@ public class ItemTagConnectorManagerTest {
         final TagManager tagManager = new TagManager(tagRepository);
         itemTagConnectorManager = new ItemTagConnectorManager(itemTagConnectorRepository, itemManager, tagManager);
         List<Item> mockedItems = Arrays.asList(
+                new Item("Apollo13", "Nen großer Schritt für die Menschheit halt."),
                 new Item("Comic 47 - Die Rache des Vader", ""),
                 new Item("Lego Sternenzerstörer", "Cooles nicht zusammengebautes Lego :)"),
                 new Item("Manga", "Band 123465"),
-                new Item("Unused :)", "Totally useless..."),
-                new Item("Apollo13", "Nen großer Schritt für die Menschheit halt."));
+                new Item("Unused :)", "Totally useless..."));
         itemRepository.saveAll(mockedItems);
         List<Tag> mockedTags = Arrays.asList(
                 new Tag("Star Wars", "This is really cool Star Wars stuff!"),
@@ -53,13 +55,13 @@ public class ItemTagConnectorManagerTest {
                 new Tag("Weltraum", "Nicht alles ausm Weltraum ist Star Wars"));
         tagRepository.saveAll(mockedTags);
         List<ItemTagConnector> mockedConnector = Arrays.asList(
-                new ItemTagConnector(mockedItems.get(0).getId(), mockedTags.get(0).getId()),
-                new ItemTagConnector(mockedItems.get(1).getId(), mockedTags.get(2).getId()),
                 new ItemTagConnector(mockedItems.get(1).getId(), mockedTags.get(0).getId()),
-                new ItemTagConnector(mockedItems.get(0).getId(), mockedTags.get(1).getId()),
-                new ItemTagConnector(mockedItems.get(2).getId(), mockedTags.get(1).getId()),
-                new ItemTagConnector(mockedItems.get(1).getId(), mockedTags.get(4).getId()),
-                new ItemTagConnector(mockedItems.get(4).getId(), mockedTags.get(4).getId()));
+                new ItemTagConnector(mockedItems.get(2).getId(), mockedTags.get(2).getId()),
+                new ItemTagConnector(mockedItems.get(2).getId(), mockedTags.get(0).getId()),
+                new ItemTagConnector(mockedItems.get(1).getId(), mockedTags.get(1).getId()),
+                new ItemTagConnector(mockedItems.get(3).getId(), mockedTags.get(1).getId()),
+                new ItemTagConnector(mockedItems.get(2).getId(), mockedTags.get(4).getId()),
+                new ItemTagConnector(mockedItems.get(0).getId(), mockedTags.get(4).getId()));
         itemTagConnectorRepository.saveAll(mockedConnector);
     }
 
@@ -107,13 +109,13 @@ public class ItemTagConnectorManagerTest {
     @Test
     public void searchItemsByTags_OnHavingDataWithoutStrategy_ReturnItemList() {
         List<Item> expectedData = Arrays.asList(
+                new Item("Apollo13", "Nen großer Schritt für die Menschheit halt."),
                 new Item("Lego Sternenzerstörer", "Cooles nicht zusammengebautes Lego :)"),
-                new Item("Comic 47 - Die Rache des Vader", ""),
-                new Item("Apollo13", "Nen großer Schritt für die Menschheit halt."));
+                new Item("Comic 47 - Die Rache des Vader", ""));
 
         List<Item> result = itemTagConnectorManager.searchItemsByTags("Star Wars");
 
-//        assertTrue(expectedData.containsAll(result));
+        assertTrue(expectedData.containsAll(result));
         assertTrue(result.containsAll(expectedData));
     }
 
@@ -133,19 +135,34 @@ public class ItemTagConnectorManagerTest {
         List<Item> result = itemTagConnectorManager.searchItemsByTags("Festival");
 
         assertEquals(expectedData, result);
-
     }
 
-//    @Test
-//    public void searchItemsByTags_OnHavingDataWithPreferTagNameStrategy_ReturnItemList() {
-//        List<Item> expectedData = Arrays.asList(
-//                new Item("Lego Sternenzerstörer", "Cooles nicht zusammengebautes Lego :)"),
-//                new Item("Comic 47 - Die Rache des Vader", ""),
-//                new Item("Apollo13", "Nen großer Schritt für die Menschheit halt."));
-//
-//        List<Item> result = itemTagConnectorManager.searchItemsByTags("Star Wars");
-//
-//        assertEquals(expectedData, result);
-//    }
+    @Test
+    public void searchItemsByTags_OnHavingDataWithSortingStrategy_ReturnItemList() {
+        List<Item> expectedData = Arrays.asList(
+                new Item("Comic 47 - Die Rache des Vader", ""),
+                new Item("Lego Sternenzerstörer", "Cooles nicht zusammengebautes Lego :)"),
+                new Item("Apollo13", "Nen großer Schritt für die Menschheit halt."));
+
+        List<Item> result = itemTagConnectorManager.searchItemsByTags("Star Wars", SearchStrategy.SORTED);
+
+        assertTrue((
+                result.get(0).equals(expectedData.get(0)) && result.get(1).equals(expectedData.get(1))) ||
+                result.get(0).equals(expectedData.get(1)) && result.get(1).equals(expectedData.get(0)));
+        assertEquals(result.get(2), expectedData.get(2));
+        assertTrue(expectedData.containsAll(result));
+        assertTrue(result.containsAll(expectedData));
+    }
+
+    @Test
+    public void createEnrichedTagSearchResults_OnHavingEmptyLists_ReturnEmptyList(){
+        List<Item> emptyDescriptionData = new ArrayList<>();
+        List<Item> emptyNameData = new ArrayList<>();
+
+        List<EnrichedSearchResult<Item>> result =
+                itemTagConnectorManager.createEnrichedTagSearchResults(emptyNameData,emptyDescriptionData);
+
+        assertTrue(result.isEmpty());
+    }
 
 }
