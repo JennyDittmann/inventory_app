@@ -70,4 +70,21 @@ public class ItemManagerTest {
         assertEquals(expectedData, result);
 
     }
+
+    @Test
+    public void deleteItem_IfExist_ReturnTrue(){
+        Item item = new Item(2, "Wallace", "Teddybär, Grün mit rotem Schaal");
+        boolean result = itemManager.deleteItem(item);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void deleteItem_IfNotExist_ReturnFalse(){
+        Item item = new Item(99, "Grillzange", "IKEA Grillzange, Grün");
+        boolean result = itemManager.deleteItem(item);
+
+        assertFalse(result);
+    }
+
 }

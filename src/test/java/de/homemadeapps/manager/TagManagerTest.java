@@ -28,8 +28,8 @@ public class TagManagerTest {
     public void setUp() {
         tagManager = new TagManager(tagRepository);
         List<Tag> mockedData = new ArrayList<>(Arrays.asList(new Tag(1, "Krieg der Sterne", "This is " +
-                "really cool Star" +
-                " Wars stuff!"), new Tag(2, "Star", "Stuff"), new Tag(3, "Dinge", "Awesome Stuff yey")));
+                "really cool Star Wars stuff!"), new Tag(2, "Star", "Stuff"), new Tag(3, "Dinge",
+                "Awesome Stuff yey")));
         tagRepository.saveAll(mockedData);
     }
 
@@ -78,6 +78,21 @@ public class TagManagerTest {
         List<Tag> result = tagManager.searchTagsByNameAndDescription("test");
 
         assertEquals(expectedData, result);
+    }
+
+    @Test
+    public void deleteTag_IfExist_ReturnTrue(){
+        boolean result = tagManager.deleteTag(new Tag(1, "Krieg der Sterne", "This is " +
+                "really cool Star Wars stuff!"));
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void deleteTag_IfNotExist_ReturnFalse(){
+        boolean result = tagManager.deleteTag(new Tag(7,"Bogenschießen","Shoooooting with errors... :D"));
+
+        assertFalse(result);
     }
 
 }
