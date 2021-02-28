@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -24,19 +25,25 @@ public class ItemTagConnectorRepositoryTest {
 
     @Before
     public void setUp() {
-        List<ItemTagConnector> mockedData = Arrays.asList(new ItemTagConnector(1, 20, 10), new ItemTagConnector(2,
-                20, 1), new ItemTagConnector(3, 2, 10));
+        List<ItemTagConnector> mockedData = Arrays.asList(
+                new ItemTagConnector(20, 10),
+                new ItemTagConnector(20, 1),
+                new ItemTagConnector(2, 10),
+                new ItemTagConnector(40, 10));
         itemTagConnectorRepository.saveAll(mockedData);
     }
 
     @Test
     public void findItemsByTagId_OnHavingData_ReturnItemIds() {
-        List<ItemTagConnector> expectedData = Arrays.asList(new ItemTagConnector(1,20,10), new ItemTagConnector(3,2,
-                10));
+        List<ItemTagConnector> expectedData = Arrays.asList(
+                new ItemTagConnector(20, 10),
+                new ItemTagConnector(2, 10),
+                new ItemTagConnector(40, 10));
 
         List<ItemTagConnector> result = itemTagConnectorRepository.findItemsByTagId(10);
 
-        assertEquals(expectedData,result);
+        assertTrue(expectedData.containsAll(result));
+        assertTrue(result.containsAll(expectedData));
     }
 
     @Test
@@ -45,17 +52,20 @@ public class ItemTagConnectorRepositoryTest {
 
         List<ItemTagConnector> result = itemTagConnectorRepository.findItemsByTagId(99);
 
-        assertEquals(expectedData,result);
+        assertEquals(expectedData, result);
     }
 
     @Test
     public void findTagsByItemId_OnHavingData_ReturnTagIds() {
-        List<ItemTagConnector> expectedData = Arrays.asList(new ItemTagConnector(1,20,10), new ItemTagConnector(2,20,
-                1));
+        List<ItemTagConnector> expectedData = Arrays.asList(
+                new ItemTagConnector(20, 10),
+                new ItemTagConnector(20, 1));
 
         List<ItemTagConnector> result = itemTagConnectorRepository.findTagsByItemId(20);
 
-        assertEquals(expectedData, result);
+
+        assertTrue(result.containsAll(expectedData));
+        assertTrue(expectedData.containsAll(result));
 
     }
 

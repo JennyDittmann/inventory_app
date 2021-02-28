@@ -26,14 +26,15 @@ public class ItemRepositoryTest {
 
     @Before
     public void setUp() {
-        mockedData = Arrays.asList(new Item(1, "Pictures", "Spiel für 3-5 Personen."), new Item(2,
-                "Ligretto", "Spiel für 2-4 Personen."));
+        mockedData = Arrays.asList(
+                new Item("Pictures", "Spiel für 3-5 Personen."),
+                new Item("Ligretto", "Spiel für 2-4 Personen."));
         itemRepository.saveAll(mockedData);
     }
 
     @Test
     public void findItemsByName_OnHavingData_ReturnList() {
-        List<Item> expectedData = Collections.singletonList(new Item(1, "Pictures", "Spiel für 3-5 Personen."));
+        List<Item> expectedData = Collections.singletonList(new Item("Pictures", "Spiel für 3-5 Personen."));
 
         List<Item> result = itemRepository.findItemsByName("Pictures");
 

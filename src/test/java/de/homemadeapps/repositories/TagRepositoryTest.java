@@ -26,14 +26,16 @@ public class TagRepositoryTest {
 
     @Before
     public void setUp() {
-        List<Tag> mockedData = Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars " +
-                "stuff!"), new Tag(2, "Star", "Stuff"), new Tag(3, "Dinge", "Awesome Stuff yey"));
+        List<Tag> mockedData = Arrays.asList(
+                new Tag("Star Wars", "This is really cool Star Wars stuff!"),
+                new Tag("Star", "Stuff"),
+                new Tag("Dinge", "Awesome Stuff yey"));
         tagRepository.saveAll(mockedData);
     }
 
     @Test
     public void findTagsByDescription_OnHavingData_ReturnList() {
-        List<Tag> expectedData = Collections.singletonList(new Tag(3, "Dinge", "Awesome Stuff yey"));
+        List<Tag> expectedData = Collections.singletonList(new Tag("Dinge", "Awesome Stuff yey"));
 
         List<Tag> result = tagRepository.findTagsByDescription("Awesome");
 
@@ -52,7 +54,7 @@ public class TagRepositoryTest {
 
     @Test
     public void findTagByExactName_OnHavingData_ReturnTag() {
-        Tag expectedData = new Tag(2, "Star", "Stuff");
+        Tag expectedData = new Tag("Star", "Stuff");
 
         Tag result = tagRepository.findTagByExactName("Star");
 
@@ -68,8 +70,9 @@ public class TagRepositoryTest {
 
     @Test
     public void findTagsByName_OnHavingData_ReturnList() {
-        List<Tag> expectedData = Arrays.asList(new Tag(1, "Star Wars", "This is really cool Star Wars" +
-                " stuff!"), new Tag(2, "Star", "Stuff"));
+        List<Tag> expectedData = Arrays.asList(
+                new Tag("Star Wars", "This is really cool Star Wars stuff!"),
+                new Tag("Star", "Stuff"));
 
         List<Tag> result = tagRepository.findTagsByName("Star");
 

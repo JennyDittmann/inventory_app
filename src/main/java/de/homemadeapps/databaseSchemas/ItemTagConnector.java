@@ -20,9 +20,16 @@ public class ItemTagConnector {
 
     }
 
-    public ItemTagConnector(final int id, final int itemId, final int tagId) {
-        this.id = id;
+    public ItemTagConnector(final int itemId, final int tagId) {
         this.itemId = itemId;
         this.tagId = tagId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemTagConnector that = (ItemTagConnector) o;
+        return itemId == that.itemId && tagId == that.tagId;
     }
 }

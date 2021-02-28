@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TagManager {
@@ -43,12 +44,36 @@ public class TagManager {
         return success;
     }
 
-    public List<Tag> searchTagsByNameAndDescription(String query) {
-        List<Tag> resultList = new ArrayList<>();
+    public List<Tag> searchTagsByName(final String query) {
+        return tagRepository.findTagsByName(query);
+    }
 
-        resultList.addAll(tagRepository.findTagsByName(query));
-        resultList.addAll(tagRepository.findTagsByDescription(query));
+    public List<Tag> searchTagsByDescription(final String query) {
+        return tagRepository.findTagsByDescription(query);
+    }
+
+    public List<Tag> searchTagsByNameAndDescription(final String query) {
+        List<Tag> resultList = new ArrayList<>(tagRepository.findTagsByName(query));
+        List<Tag> resultListByDescription = new ArrayList<>(tagRepository.findTagsByDescription(query));
+
+        for (Tag tag : resultListByDescription) {
+            if (!resultList.contains(tag)) {
+                resultList.add(tag);
+            }
+        }
 
         return resultList;
+    }
+
+
+    public boolean deleteTag(final int id) {
+        Optional<Tag> tagFromDatabase = tagRepository.findById(id);
+        boolean tagIsPresent = tagFromDatabase.isPresent();
+
+        if (tagIsPresent) {
+            tagRepository.delete(tagFromDatabase.get());
+        }
+
+        return tagIsPresent;
     }
 }
