@@ -82,7 +82,7 @@ public class ItemTagConnectorManager {
     }
 
     //TODO: Find better naming... :)
-    public List<EnrichedSearchResult<Item>> createEnrichedTagSearchResults(final List<Item> itemListName,
+    private List<EnrichedSearchResult<Item>> createEnrichedTagSearchResults(final List<Item> itemListName,
                                                                            final List<Item> itemListDescription) {
         List<EnrichedSearchResult<Item>> enrichedSearchResults = new ArrayList<>();
 

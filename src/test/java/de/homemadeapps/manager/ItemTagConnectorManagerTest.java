@@ -167,15 +167,4 @@ public class ItemTagConnectorManagerTest {
 
         assertEquals(expectedData, result);
     }
-
-    @Test
-    public void createEnrichedTagSearchResults_OnHavingEmptyLists_ReturnEmptyList(){
-        List<Item> emptyDescriptionData = new ArrayList<>();
-        List<Item> emptyNameData = new ArrayList<>();
-
-        List<EnrichedSearchResult<Item>> result =
-                itemTagConnectorManager.createEnrichedTagSearchResults(emptyNameData,emptyDescriptionData);
-
-        assertTrue(result.isEmpty());
-    }
 }
