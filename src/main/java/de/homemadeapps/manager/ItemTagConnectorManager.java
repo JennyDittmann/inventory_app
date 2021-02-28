@@ -59,10 +59,9 @@ public class ItemTagConnectorManager {
     }
 
     public List<Item> searchItemsByTags(final String searchQuery, final SearchStrategy searchStrategy) {
+        final List<Item> result = new ArrayList<>();
         final List<Item> descriptionSearchResult = findItemsByTagDescription(searchQuery);
         final List<Item> nameSearchResult = findItemsByTagName(searchQuery);
-        Set<Item> result = new LinkedHashSet<>(descriptionSearchResult);
-        result.addAll(nameSearchResult);
         List<EnrichedSearchResult<Item>> enrichedSearchResults = createEnrichedTagSearchResults(nameSearchResult,
                 descriptionSearchResult);
         Comparator<EnrichedSearchResult<Item>> sortStrategy;
@@ -75,8 +74,11 @@ public class ItemTagConnectorManager {
             sortStrategy = new UnsortedStrategyComparator<>();
         }
         enrichedSearchResults.sort(sortStrategy);
+        for(EnrichedSearchResult<Item> enrichedItem : enrichedSearchResults){
+            result.add(enrichedItem.result);
+        }
 
-        return new ArrayList<>(result);
+        return result;
     }
 
     //TODO: Find better naming... :)
@@ -109,6 +111,6 @@ public class ItemTagConnectorManager {
     }
 
     private Optional<EnrichedSearchResult<Item>> getItemEnrichedSearchResult(List<EnrichedSearchResult<Item>> enrichedSearchResults, Item item) {
-        return enrichedSearchResults.stream().findFirst().filter(e -> e.result.equals(item));
+        return enrichedSearchResults.stream().filter(e -> e.result.equals(item)).findFirst();
     }
 }

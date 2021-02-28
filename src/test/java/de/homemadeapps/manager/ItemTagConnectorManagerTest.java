@@ -52,7 +52,8 @@ public class ItemTagConnectorManagerTest {
                 new Tag("Buch", "Bücher, Romane, Mangas"),
                 new Tag("Lego", "Lego oder andere Klemmbausteine"),
                 new Tag("Nichts", "Ne wirklich nichts"),
-                new Tag("Weltraum", "Nicht alles ausm Weltraum ist Star Wars"));
+                new Tag("Weltraum", "Nicht alles ausm Weltraum ist Star Wars"),
+                new Tag("Star Wars Spielzeug", "Das ist halt Star Wars Spielzeug"));
         tagRepository.saveAll(mockedTags);
         List<ItemTagConnector> mockedConnector = Arrays.asList(
                 new ItemTagConnector(mockedItems.get(1).getId(), mockedTags.get(0).getId()),
@@ -61,7 +62,8 @@ public class ItemTagConnectorManagerTest {
                 new ItemTagConnector(mockedItems.get(1).getId(), mockedTags.get(1).getId()),
                 new ItemTagConnector(mockedItems.get(3).getId(), mockedTags.get(1).getId()),
                 new ItemTagConnector(mockedItems.get(2).getId(), mockedTags.get(4).getId()),
-                new ItemTagConnector(mockedItems.get(0).getId(), mockedTags.get(4).getId()));
+                new ItemTagConnector(mockedItems.get(0).getId(), mockedTags.get(4).getId()),
+                new ItemTagConnector(mockedItems.get(2).getId(), mockedTags.get(5).getId()));
         itemTagConnectorRepository.saveAll(mockedConnector);
     }
 
@@ -138,7 +140,7 @@ public class ItemTagConnectorManagerTest {
     }
 
     @Test
-    public void searchItemsByTags_OnHavingDataWithSortingStrategy_ReturnItemList() {
+    public void searchItemsByTags_OnHavingDataWithSortingStrategy_ReturnSortedItemList() {
         List<Item> expectedData = Arrays.asList(
                 new Item("Comic 47 - Die Rache des Vader", ""),
                 new Item("Lego Sternenzerstörer", "Cooles nicht zusammengebautes Lego :)"),
@@ -155,6 +157,18 @@ public class ItemTagConnectorManagerTest {
     }
 
     @Test
+    public void searchItemsByTags_OnHavingDataWithPreferTagCountStrategy_ReturnSortedItemList(){
+        List<Item> expectedData = Arrays.asList(
+                new Item("Lego Sternenzerstörer", "Cooles nicht zusammengebautes Lego :)"),
+                new Item("Comic 47 - Die Rache des Vader", ""),
+                new Item("Apollo13", "Nen großer Schritt für die Menschheit halt."));
+
+        List<Item> result = itemTagConnectorManager.searchItemsByTags("Star Wars", SearchStrategy.PREFER_TAG_COUNT);
+
+        assertEquals(expectedData, result);
+    }
+
+    @Test
     public void createEnrichedTagSearchResults_OnHavingEmptyLists_ReturnEmptyList(){
         List<Item> emptyDescriptionData = new ArrayList<>();
         List<Item> emptyNameData = new ArrayList<>();
@@ -164,5 +178,4 @@ public class ItemTagConnectorManagerTest {
 
         assertTrue(result.isEmpty());
     }
-
 }
