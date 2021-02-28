@@ -29,4 +29,12 @@ public class EnrichedSearchResult<T> {
     public int getDescriptionCount() {
         return descriptionCount;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EnrichedSearchResult<?> that = (EnrichedSearchResult<?>) o;
+        return nameCount == that.nameCount && descriptionCount == that.descriptionCount && Objects.equals(result, that.result);
+    }
 }

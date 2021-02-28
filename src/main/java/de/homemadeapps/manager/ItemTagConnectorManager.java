@@ -1,7 +1,9 @@
 package de.homemadeapps.manager;
 
-import de.homemadeapps.EnrichedSearchResult;
-import de.homemadeapps.SearchStrategy;
+import de.homemadeapps.*;
+import de.homemadeapps.comparators.PreferTagCountStrategyComparator;
+import de.homemadeapps.comparators.SimpleSortStrategyComparator;
+import de.homemadeapps.comparators.UnsortedStrategyComparator;
 import de.homemadeapps.databaseSchemas.Item;
 import de.homemadeapps.databaseSchemas.ItemTagConnector;
 import de.homemadeapps.databaseSchemas.Tag;
@@ -39,12 +41,13 @@ public class ItemTagConnectorManager {
     private List<Item> getItemsByTags(final List<Tag> tagList) {
         final List<ItemTagConnector> connections = new ArrayList<>();
         final List<Item> foundItems = new ArrayList<>();
+
         for (final Tag tag : tagList) {
             connections.addAll(itemTagConnectorRepository.findItemsByTagId(tag.getId()));
         }
-
         for (final ItemTagConnector connection : connections) {
-            foundItems.add(itemManager.getItemById(connection.getItemId()).get());
+            Optional<Item> item = itemManager.getItemById(connection.getItemId());
+            item.ifPresent(foundItems::add);
         }
 
         return foundItems.stream().filter(Objects::nonNull).collect(Collectors.toList());
@@ -57,9 +60,21 @@ public class ItemTagConnectorManager {
     public List<Item> searchItemsByTags(final String searchQuery, final SearchStrategy searchStrategy) {
         final List<Item> descriptionSearchResult = findItemsByTagDescription(searchQuery);
         final List<Item> nameSearchResult = findItemsByTagName(searchQuery);
-
         Set<Item> result = new LinkedHashSet<>(descriptionSearchResult);
         result.addAll(nameSearchResult);
+        List<EnrichedSearchResult<Item>> enrichedSearchResults = createEnrichedTagSearchResults(nameSearchResult,
+                descriptionSearchResult);
+        Comparator<EnrichedSearchResult<Item>> sortStrategy;
+
+        if(searchStrategy.equals(SearchStrategy.SORTED)){
+            sortStrategy = new SimpleSortStrategyComparator<>();
+        }else if(searchStrategy.equals(SearchStrategy.PREFER_TAG_COUNT)){
+            sortStrategy = new PreferTagCountStrategyComparator<>();
+        }else{
+            sortStrategy = new UnsortedStrategyComparator<>();
+        }
+
+        enrichedSearchResults.sort(sortStrategy);
 
         return new ArrayList<>(result);
     }
@@ -73,7 +88,6 @@ public class ItemTagConnectorManager {
             EnrichedSearchResult<Item> enrichedResult = addItemIfAbsentAndReturnEnrichedSearchResult(enrichedSearchResults, item);
             enrichedResult.increaseNameCount();
         }
-
         for (final Item item : itemListDescription) {
             EnrichedSearchResult<Item> enrichedResult = addItemIfAbsentAndReturnEnrichedSearchResult(enrichedSearchResults, item);
             enrichedResult.increaseDescriptionCount();
@@ -82,6 +96,7 @@ public class ItemTagConnectorManager {
         return enrichedSearchResults;
     }
 
+    //TODO: Diese Methode macht so wie sie gerade impl. ist nicht viel Sinn -> nochmal Checken (Zeile 107!)
     private EnrichedSearchResult<Item> addItemIfAbsentAndReturnEnrichedSearchResult(List<EnrichedSearchResult<Item>> enrichedSearchResults, Item item) {
         EnrichedSearchResult<Item> enrichedResult;
         Optional<EnrichedSearchResult<Item>> maybeItem =
@@ -93,7 +108,7 @@ public class ItemTagConnectorManager {
         } else {
             enrichedResult = maybeItem.get();
         }
+
         return enrichedResult;
     }
-
 }
