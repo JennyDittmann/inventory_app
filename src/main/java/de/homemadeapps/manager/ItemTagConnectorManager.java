@@ -1,6 +1,7 @@
 package de.homemadeapps.manager;
 
-import de.homemadeapps.*;
+import de.homemadeapps.EnrichedSearchResult;
+import de.homemadeapps.SearchStrategy;
 import de.homemadeapps.comparators.PreferTagCountStrategyComparator;
 import de.homemadeapps.comparators.SimpleSortStrategyComparator;
 import de.homemadeapps.comparators.UnsortedStrategyComparator;
@@ -66,14 +67,13 @@ public class ItemTagConnectorManager {
                 descriptionSearchResult);
         Comparator<EnrichedSearchResult<Item>> sortStrategy;
 
-        if(searchStrategy.equals(SearchStrategy.SORTED)){
+        if (searchStrategy.equals(SearchStrategy.SORTED)) {
             sortStrategy = new SimpleSortStrategyComparator<>();
-        }else if(searchStrategy.equals(SearchStrategy.PREFER_TAG_COUNT)){
+        } else if (searchStrategy.equals(SearchStrategy.PREFER_TAG_COUNT)) {
             sortStrategy = new PreferTagCountStrategyComparator<>();
-        }else{
+        } else {
             sortStrategy = new UnsortedStrategyComparator<>();
         }
-
         enrichedSearchResults.sort(sortStrategy);
 
         return new ArrayList<>(result);
@@ -81,34 +81,34 @@ public class ItemTagConnectorManager {
 
     //TODO: Find better naming... :)
     public List<EnrichedSearchResult<Item>> createEnrichedTagSearchResults(final List<Item> itemListName,
-                                                           final List<Item> itemListDescription) {
+                                                                           final List<Item> itemListDescription) {
         List<EnrichedSearchResult<Item>> enrichedSearchResults = new ArrayList<>();
 
         for (final Item item : itemListName) {
-            EnrichedSearchResult<Item> enrichedResult = addItemIfAbsentAndReturnEnrichedSearchResult(enrichedSearchResults, item);
-            enrichedResult.increaseNameCount();
+            addItemIfAbsent(enrichedSearchResults, item);
+            Optional<EnrichedSearchResult<Item>> enrichedResult = getItemEnrichedSearchResult(enrichedSearchResults, item);
+            enrichedResult.get().increaseNameCount();
         }
         for (final Item item : itemListDescription) {
-            EnrichedSearchResult<Item> enrichedResult = addItemIfAbsentAndReturnEnrichedSearchResult(enrichedSearchResults, item);
-            enrichedResult.increaseDescriptionCount();
+            addItemIfAbsent(enrichedSearchResults, item);
+            Optional<EnrichedSearchResult<Item>> enrichedResult = getItemEnrichedSearchResult(enrichedSearchResults, item);
+            enrichedResult.get().increaseDescriptionCount();
         }
 
         return enrichedSearchResults;
     }
 
-    //TODO: Diese Methode macht so wie sie gerade impl. ist nicht viel Sinn -> nochmal Checken (Zeile 107!)
-    private EnrichedSearchResult<Item> addItemIfAbsentAndReturnEnrichedSearchResult(List<EnrichedSearchResult<Item>> enrichedSearchResults, Item item) {
+    private void addItemIfAbsent(List<EnrichedSearchResult<Item>> enrichedSearchResults, Item item) {
         EnrichedSearchResult<Item> enrichedResult;
-        Optional<EnrichedSearchResult<Item>> maybeItem =
-                enrichedSearchResults.stream().findFirst().filter(e -> e.result.equals(item));
+        Optional<EnrichedSearchResult<Item>> maybeItem = getItemEnrichedSearchResult(enrichedSearchResults, item);
 
         if (maybeItem.isEmpty()) {
             enrichedResult = new EnrichedSearchResult<>(item);
             enrichedSearchResults.add(enrichedResult);
-        } else {
-            enrichedResult = maybeItem.get();
         }
+    }
 
-        return enrichedResult;
+    private Optional<EnrichedSearchResult<Item>> getItemEnrichedSearchResult(List<EnrichedSearchResult<Item>> enrichedSearchResults, Item item) {
+        return enrichedSearchResults.stream().findFirst().filter(e -> e.result.equals(item));
     }
 }
