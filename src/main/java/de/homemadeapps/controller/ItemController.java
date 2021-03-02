@@ -18,34 +18,51 @@ public class ItemController {
     }
 
     @GetMapping(value = "addItem", produces = "application/json")
-    public Map<String,String> addItem(final String name, final String description) {
-        Map<String,String> response = new HashMap<>();
+    public Map<String,Integer> addItem(final String name, final String description) {
+        Map<String,Integer> response = new HashMap<>();
 
         try{
             if(itemManager.saveItem(name,description)){
-                response.put("responseCode", "201");
+                response.put("responseCode", 201);
             }else{
-                response.put("responseCode", "417");
+                response.put("responseCode", 417);
             }
         }catch (Exception e){
-            response.put("responseCode","500");
+            response.put("responseCode",500);
         }
 
         return response;
     }
 
     @GetMapping(value = "updateItem", produces = "application/json")
-    public Map<String, String> updateItem(int id, String name, String description) {
-        Map<String,String> response = new HashMap<>();
+    public Map<String, Integer> updateItem(final int id, String name, final String description) {
+        Map<String,Integer> response = new HashMap<>();
 
         try{
             if(itemManager.updateItem(id, name,description)){
-                response.put("responseCode", "200");
+                response.put("responseCode", 200);
             }else{
-                response.put("responseCode", "417");
+                response.put("responseCode", 417);
             }
         }catch (Exception e){
-            response.put("responseCode","500");
+            response.put("responseCode",500);
+        }
+
+        return response;
+    }
+
+    @GetMapping(value = "deleteItem", produces = "application/json")
+    public Map<String,Integer> deleteItem(final int id){
+        Map<String,Integer> response = new HashMap<>();
+
+        try{
+            if(itemManager.deleteItem(id)){
+                response.put("responseCode",200);
+            }else{
+                response.put("responseCode",417);
+            }
+        }catch (Exception e){
+            response.put("responseCode",500);
         }
 
         return response;
