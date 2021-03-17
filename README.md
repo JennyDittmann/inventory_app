@@ -17,3 +17,10 @@ Diese App befindet sich derzeit in der Entwicklung. Sie wird überwiegend test d
 - "Void container" sowie "Nexus room" -> Wenn man weiß dass das Item vorhanden ist, der Ort/Container jedoch unbekannt ist.
 - Radiussuche anhand der virutellen Koordinaten
 - Abfrage ob das gewünschte Item an dem hinterlegten Ort gefunden wurde -> Wenn Nicht -> Anpassungsmenü des Containers/Raumes
+
+## Nutzung
+Docker installieren.
+
+Im root Verzeichnis des Projektes:
+`docker create -v /var/lib/postgresql/data --name PostgresData alpine` so wie
+`docker-compose up` ausführen.

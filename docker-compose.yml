@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
 
   inventoryapp:
-    image: inventoryapp:latest
+    image: shisu4/inventoryapp:latest
     network_mode: bridge
     container_name: inventoryapp
     expose:
