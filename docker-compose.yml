@@ -1,0 +1,34 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:latest
+    network_mode: bridge
+    container_name: postgres
+    volumes:
+        - postgres-data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=blah42
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=inventory_database
+    restart: unless-stopped
+
+  inventoryapp:
+    image: inventoryapp:latest
+    network_mode: bridge
+    container_name: inventoryapp
+    expose:
+      - 2004
+    ports:
+      - 2004:2004
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    links:
+      - postgres
+
+volumes:
+  postgres-data:
