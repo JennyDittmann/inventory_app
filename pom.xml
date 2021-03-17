@@ -68,7 +68,6 @@
             <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
     </dependencies>
-
     <build>
         <finalName>inventory_app</finalName>
         <plugins>
