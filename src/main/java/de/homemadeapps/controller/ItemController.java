@@ -4,6 +4,7 @@ import de.homemadeapps.manager.ItemManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class ItemController {
         this.itemManager = itemManager;
     }
 
-    @GetMapping(value = "addItem", produces = "application/json")
+    @PostMapping(value = "addItem", produces = "application/json")
     public Map<String,Integer> addItem(final String name, final String description) {
         Map<String,Integer> response = new HashMap<>();
 
@@ -34,7 +35,7 @@ public class ItemController {
         return response;
     }
 
-    @GetMapping(value = "updateItem", produces = "application/json")
+    @PostMapping(value = "updateItem", produces = "application/json")
     public Map<String, Integer> updateItem(final int id, String name, final String description) {
         Map<String,Integer> response = new HashMap<>();
 
@@ -51,7 +52,7 @@ public class ItemController {
         return response;
     }
 
-    @GetMapping(value = "deleteItem", produces = "application/json")
+    @PostMapping(value = "deleteItem", produces = "application/json")
     public Map<String,Integer> deleteItem(final int id){
         Map<String,Integer> response = new HashMap<>();
 
