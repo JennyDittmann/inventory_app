@@ -23,12 +23,12 @@ public class ItemController {
 
         try {
             if (itemManager.saveItem(name, description)) {
-                response.put("responseCode", 201);
+                response.put("status", 201);
             } else {
-                response.put("responseCode", 417);
+                response.put("status", 417);
             }
         } catch (Exception e) {
-            response.put("responseCode", 500);
+            response.put("status", 500);
         }
 
         return response;
@@ -40,12 +40,12 @@ public class ItemController {
 
         try {
             if (itemManager.updateItem(id, name, description)) {
-                response.put("responseCode", 200);
+                response.put("status", 200);
             } else {
-                response.put("responseCode", 417);
+                response.put("status", 417);
             }
         } catch (Exception e) {
-            response.put("responseCode", 500);
+            response.put("status", 500);
         }
 
         return response;
@@ -57,12 +57,12 @@ public class ItemController {
 
         try {
             if (itemManager.deleteItem(id)) {
-                response.put("responseCode", 200);
+                response.put("status", 200);
             } else {
-                response.put("responseCode", 417);
+                response.put("status", 417);
             }
         } catch (Exception e) {
-            response.put("responseCode", 500);
+            response.put("status", 500);
         }
 
         return response;

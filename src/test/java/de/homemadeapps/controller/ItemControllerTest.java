@@ -28,7 +28,7 @@ public class ItemControllerTest {
 
         Map<String, Integer> result = itemController.addItem("name", "description");
 
-        assertEquals("201", result.get("responseCode").toString());
+        assertEquals("201", result.get("status").toString());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class ItemControllerTest {
 
         Map<String, Integer> result = itemController.addItem("name", "description");
 
-        assertEquals("417", result.get("responseCode").toString());
+        assertEquals("417", result.get("status").toString());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class ItemControllerTest {
 
         Map<String, Integer> result = itemController.addItem("name", "description");
 
-        assertEquals("500", result.get("responseCode").toString());
+        assertEquals("500", result.get("status").toString());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class ItemControllerTest {
 
         Map<String,Integer> result = itemController.updateItem(1,"name","description");
 
-        assertEquals("200",result.get("responseCode").toString());
+        assertEquals("200",result.get("status").toString());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class ItemControllerTest {
 
         Map<String,Integer> result = itemController.updateItem(1,"name","description");
 
-        assertEquals("417",result.get("responseCode").toString());
+        assertEquals("417",result.get("status").toString());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ItemControllerTest {
 
         Map<String,Integer> result = itemController.updateItem(1,"name","description");
 
-        assertEquals("500",result.get("responseCode").toString());
+        assertEquals("500",result.get("status").toString());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ItemControllerTest {
 
         Map<String,Integer> result = itemController.deleteItem(1);
 
-        assertEquals("200",result.get("responseCode").toString());
+        assertEquals("200",result.get("status").toString());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class ItemControllerTest {
 
         Map<String,Integer> result = itemController.deleteItem(1);
 
-        assertEquals("417",result.get("responseCode").toString());
+        assertEquals("417",result.get("status").toString());
     }
 
     @Test
@@ -100,6 +100,6 @@ public class ItemControllerTest {
 
         Map<String,Integer> result = itemController.deleteItem(1);
 
-        assertEquals("500",result.get("responseCode").toString());
+        assertEquals("500",result.get("status").toString());
     }
 }
