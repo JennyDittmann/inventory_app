@@ -48,8 +48,7 @@ public class ItemManager {
         boolean success = false;
 
         if (itemRepository.findById(id).isPresent()) {
-            final Item item = new Item(name, description);
-            itemRepository.save(item);
+            itemRepository.update(id, name, description);
             success = true;
         }
 

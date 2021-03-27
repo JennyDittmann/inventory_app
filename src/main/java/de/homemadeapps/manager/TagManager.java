@@ -36,8 +36,7 @@ public class TagManager {
         boolean success = false;
 
         if (tagRepository.findById(id).isPresent()) {
-            final Tag tag = new Tag(name, description);
-            tagRepository.save(tag);
+            tagRepository.update(id, name, description);
             success = true;
         }
 
