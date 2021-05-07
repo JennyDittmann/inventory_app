@@ -27,7 +27,7 @@ public class ItemManager {
         boolean doExist = false;
         final Item item = new Item();
         item.setName(name);
-        item.setName(description);
+        item.setDescription(description);
         final List<Item> smallItemRepo = itemRepository.findItemsByName(name);
 
         for (Item filteredItem : smallItemRepo) {
@@ -48,8 +48,7 @@ public class ItemManager {
         boolean success = false;
 
         if (itemRepository.findById(id).isPresent()) {
-            final Item item = new Item(name, description);
-            itemRepository.save(item);
+            itemRepository.update(id, name, description);
             success = true;
         }
 
