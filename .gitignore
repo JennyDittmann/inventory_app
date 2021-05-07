@@ -18,6 +18,13 @@ hs_err_pid*
 
 # IDEA
 .idea/
+# VS Code
+.vscode/
+# Eclipse
+.settings/
+.classpath
+.factorypath
+.project
 
 # Project
 target/
